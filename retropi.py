@@ -82,12 +82,12 @@ def main():
     Q=5 if uat else 15
     log.debug( "===== " + datetime.now().strftime("%Y%m%d %H:%M:%S") + " =====")
     log.info(f"You may play for 25 min, if you answer {Q} questions correctly")
-    log.info(f"{Q} Add & Sub questions for Lian:")
+    log.info(f"{Q} Add & Sub questions:")
     for i in range(Q, 0, -1): question_op(i)
-    log.info(f"{Q} Multi & Div questions for Luca (Round to 2 decimals where applicable):")
+    log.info(f"{Q} Multi & Div questions (Round to 2 decimals where applicable):")
     for i in range(Q, 0, -1): question_op(i, 1)
 
-    log.info("Well done, enjoy the game.")
+    log.info("Well done, go ask Mom for a reward.")
 
     # close logger
     lh = list(log.handlers)
