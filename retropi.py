@@ -4,24 +4,6 @@ from datetime import datetime
 from colorama import Fore, Style
 from operator import add, sub, mul, truediv
 
-def played(x=0):
-    fname = logpath + datetime.now().strftime("%Y%m%d")
-    if (x == 0):
-        if os.path.isfile(fname):
-            f=open(fname)
-            p=f.read()
-            f.close()
-            try :
-                return int(p)
-            except ValueError:
-                return 0
-        else:
-            return 0
-    else:
-        f=open(fname, "w")
-        f.write(str(x))
-        f.close()
-
 def check_op(ans, z, msg):
     try :
         if float(ans) == z :
@@ -58,22 +40,6 @@ def question_op(n, qtype=0):
         while True:
             ans = input(msg)
             if check_op(ans, z, msg) == 1: break
-
-def play(T):
-    cmd="/opt/retropie/supplementary/emulationstation/emulationstation.sh &"
-    subprocess.run(cmd, shell=True, check=True, executable='/bin/bash')
-    time.sleep(T * 60)
-    killcmd="pgrep retro |xargs kill"
-    try :
-        subprocess.run(killcmd, shell=True, check=True, executable='/bin/bash')
-    except subprocess.CalledProcessError:
-        pass
-    time.sleep(2)
-    killcmd="pgrep emulat |xargs kill"
-    try :
-        subprocess.run(killcmd, shell=True, check=True, executable='/bin/bash')
-    except subprocess.CalledProcessError:
-        pass
 
 # Main
 def main():
@@ -114,22 +80,16 @@ def main():
     log.addHandler(ch)
 
     Q=5 if uat else 15
-    X = played() + 1
-    Q = Q * (X)
-    log.debug( "===== " + datetime.now().strftime("%Y%m%d %H:%M:%S") + " ===== play " + str(X))
-    log.info(f"You may play for 25 min, if both Lian & Luca answer {Q} questions correctly")
+    log.debug( "===== " + datetime.now().strftime("%Y%m%d %H:%M:%S") + " =====")
+    log.info(f"You may play for 25 min, if you answer {Q} questions correctly")
     log.info(f"{Q} Add & Sub questions for Lian:")
     for i in range(Q, 0, -1): question_op(i)
     log.info(f"{Q} Multi & Div questions for Luca (Round to 2 decimals where applicable):")
     for i in range(Q, 0, -1): question_op(i, 1)
 
     log.info("Well done, enjoy the game.")
-    if not uat:
-        play(25)
-        played(X)
-        log.info(datetime.now().strftime("%Y%m%d %H:%M:%S") + " - Game time is up")
 
-# close logger
+    # close logger
     lh = list(log.handlers)
     for i in lh:
         log.removeHandler(i)
